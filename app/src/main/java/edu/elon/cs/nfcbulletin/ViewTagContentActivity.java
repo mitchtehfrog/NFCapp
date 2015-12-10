@@ -2,6 +2,11 @@ package edu.elon.cs.nfcbulletin;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.nfc.FormatException;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.Tag;
+import android.nfc.tech.Ndef;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +24,8 @@ public class ViewTagContentActivity extends Activity {
     protected static List<Message> messageArrayList;
     protected static int relevantPosition;
     protected static ArrayList<String> stringArrayList;
+    //FIXME was only made a data member for addNoteClick
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +39,12 @@ public class ViewTagContentActivity extends Activity {
        // ArrayAdapter<Message> arrayAdapter = new ArrayAdapter<Message>(this, android.R.layout.
         //simple_list_item_1, messageArrayList);
 
-        Intent intent = getIntent();
-        stringArrayList = intent.getStringArrayListExtra("messages");
+        intent = getIntent();
+        if(intent.getIntExtra("notes-int", 0) == 1){
+            stringArrayList = intent.getStringArrayListExtra("messages");
+        }else{
+            stringArrayList = intent.getStringArrayListExtra("no-notes");
+        }
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.
                 simple_list_item_1, stringArrayList);
@@ -42,9 +53,31 @@ public class ViewTagContentActivity extends Activity {
 
         listView.setOnItemLongClickListener(itemLongClickListener);
 
+    }
+
+//    public void addNoteClick(View view){
+//        Tag tag = intent.getParcelableExtra("tag");
+//        Ndef ndefTag = Ndef.get(tag);
+//        NdefMessage ndefMessage = ndefTag.getCachedNdefMessage();
+//        ArrayList<String> arrayList = ScanNFCActivity.parseStringArrayListFromNdefMessage(ndefMessage);
+//        Intent newIntent = new Intent(this, EnterTextActivity.class);
+//        startActivity(intent);
+//
+//    }
+
+    //FIXME this method doesn't work.
+//    private NdefMessage createNdefMessage(String content){
+//        NdefRecord ndefRecord = NdefRecord.createTextRecord("d", content);
+//        NdefMessage ndefMessage = new NdefMessage(new NdefRecord[](ndefRecord));
+//    }
 
 
 
+    public void onAddNoteClick(View view){
+        Intent intent = new Intent(this, EnterTextActivity.class);
+        //FIXME add some code to NOT put the "No notes found!" message
+        intent.putStringArrayListExtra("messages", stringArrayList);
+        startActivity(intent);
     }
 
     AdapterView.OnItemLongClickListener itemLongClickListener = new AdapterView.OnItemLongClickListener() {
