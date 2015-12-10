@@ -79,6 +79,7 @@ public class ScanNFCActivity extends Activity {
 
             Parcelable[] parcelables = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
             if(parcelables != null && parcelables.length > 0){
+
                 Toast.makeText(this, "found some notes!", Toast.LENGTH_SHORT).show();
                 ArrayList<String> messages = parseStringArrayListFromNdefMessage((NdefMessage) parcelables[0]);
                 Intent newIntent = new Intent(this, ViewTagContentActivity.class);

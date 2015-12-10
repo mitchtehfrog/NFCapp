@@ -34,11 +34,13 @@
         </activity>
         <activity
             android:name=".EditOrDeleteActivity"
-            android:label="@string/title_activity_edit_or_delete" >
+            android:label="@string/title_activity_edit_or_delete"
+            android:theme="@android:style/Theme.Material.Dialog">
         </activity>
         <activity
             android:name=".WriteNoteActivity"
-            android:label="@string/title_activity_write_note" >
+            android:label="@string/title_activity_write_note"
+            android:theme="@android:style/Theme.Material.Dialog">
         </activity>
     </application>
 

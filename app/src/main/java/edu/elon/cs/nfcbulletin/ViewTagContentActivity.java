@@ -84,7 +84,8 @@ public class ViewTagContentActivity extends Activity {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
             relevantPosition = position;
-            System.out.println("in longclick");
+            Intent intent = new Intent(getApplicationContext(), EditOrDeleteActivity.class);
+            startActivity(intent);
             return true;
         }
     };

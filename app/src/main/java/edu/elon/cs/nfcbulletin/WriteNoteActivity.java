@@ -58,7 +58,9 @@ public class WriteNoteActivity extends Activity {
                 ndef.close();
             }
         }catch (Exception e){
-            Log.e("writeNdefMessage", e.getMessage());
+            if(e.getMessage() != null) {
+                Log.e("writeNdefMessage", e.getMessage());
+            }
         }
 
     }
@@ -104,8 +106,16 @@ public class WriteNoteActivity extends Activity {
             Parcelable[] parcelables = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
 
 
-            if(parcelables == null) {
-               formatTag(tag, newNdefMessage);
+            //if(parcelables != null) {
+              //  NdefMessage ndefMessage = (NdefMessage) parcelables[0];
+               //formatTag(tag, ndefMessage);
+            //}
+
+            int size = newNdefMessage.toByteArray().length;
+            Ndef ndef = Ndef.get(tag);
+            if(ndef.getMaxSize() < size){
+                Toast.makeText(this, "not enough space to write to tag",Toast.LENGTH_SHORT).show();
+                return;
             }
             writeNdefMessage(tag, newNdefMessage);
 
@@ -115,6 +125,7 @@ public class WriteNoteActivity extends Activity {
             ArrayList<String> stringArrayList = ScanNFCActivity.parseStringArrayListFromNdefMessage(newNdefMessage);
             newIntent.putStringArrayListExtra("messages", stringArrayList);
             newIntent.putExtra("notes-int", 1);
+            finish();
             startActivity(newIntent);
 
 

@@ -21,25 +21,49 @@ import java.util.ArrayList;
 public class EnterTextActivity extends Activity {
 
     private ArrayList<String> stringArrayList;
+    private String editMessage;
+    private int relevantPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_text);
         Intent intent = getIntent();
-        stringArrayList = intent.getStringArrayListExtra("messages");
+            stringArrayList = intent.getStringArrayListExtra("messages");
+
+        if(intent.getIntExtra("int-edit", 0) == 1){
+            editMessage = intent.getStringExtra("editmessage");
+        }
+        if(intent.hasExtra("relevantPosition")){
+            relevantPosition = intent.getIntExtra("relevantPosition", -1);
+        }
+        EditText et = (EditText) findViewById(R.id.edittext);
+        if(editMessage != null){
+            et.setText(editMessage);
+        }
+
     }
 
 
     public NdefMessage getNewNdefMessage(){
         EditText et = (EditText) findViewById(R.id.edittext);
-        String newString = et.getText().toString();
-        stringArrayList.add(newString);
-        NdefRecord[] ndefRecords = new NdefRecord[stringArrayList.size()];
-        for(int i = 0; i < stringArrayList.size(); i++){
-            NdefRecord ndefRecord = NdefRecord.createTextRecord(null, stringArrayList.get(i));
-            ndefRecords[i] = ndefRecord;
+        if(editMessage == null) {
+            String newString = et.getText().toString();
+            stringArrayList.add(newString);
         }
+        else{
+            String newString = et.getText().toString();
+            stringArrayList.remove(relevantPosition);
+            stringArrayList.add(newString);
+        }
+
+            NdefRecord[] ndefRecords = new NdefRecord[stringArrayList.size()];
+            for (int i = 0; i < stringArrayList.size(); i++) {
+                NdefRecord ndefRecord = NdefRecord.createTextRecord(null, stringArrayList.get(i));
+                ndefRecords[i] = ndefRecord;
+            }
+
+
         NdefMessage ndefMessage = new NdefMessage(ndefRecords);
         return ndefMessage;
     }
