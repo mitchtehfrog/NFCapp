@@ -78,10 +78,12 @@ public class ScanNFCActivity extends Activity {
 
 
             Parcelable[] parcelables = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-            if(parcelables != null && parcelables.length > 0){
+            ArrayList<String> messages = parseStringArrayListFromNdefMessage((NdefMessage) parcelables[0]);
+            if(parcelables != null && parcelables.length > 0 && !messages.get(0).equals("")){
 
+                if(messages.get(0).equals("") && messages.size() == 1)
                 Toast.makeText(this, "found some notes!", Toast.LENGTH_SHORT).show();
-                ArrayList<String> messages = parseStringArrayListFromNdefMessage((NdefMessage) parcelables[0]);
+
                 Intent newIntent = new Intent(this, ViewTagContentActivity.class);
                 newIntent.putStringArrayListExtra("messages", messages);
                 newIntent.putExtra("notes-int", 1);
@@ -91,7 +93,7 @@ public class ScanNFCActivity extends Activity {
             }else{
                 Toast.makeText(this, "No notes found!", Toast.LENGTH_SHORT).show();
                 ArrayList<String> blankArrayList = new ArrayList<>();
-                blankArrayList.add("No notes found!");
+                blankArrayList.add("");
                 Intent noNotesIntent = new Intent(this, ViewTagContentActivity.class);
                 noNotesIntent.putStringArrayListExtra("no-notes", blankArrayList);
                 noNotesIntent.putExtra("notes-int", 0);

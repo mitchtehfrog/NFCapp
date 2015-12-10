@@ -123,6 +123,9 @@ public class WriteNoteActivity extends Activity {
 
             Intent newIntent = new Intent(this, ViewTagContentActivity.class);
             ArrayList<String> stringArrayList = ScanNFCActivity.parseStringArrayListFromNdefMessage(newNdefMessage);
+            if(stringArrayList.get(0).equals("") && stringArrayList.size() == 2){
+                stringArrayList.remove(0);
+            }
             newIntent.putStringArrayListExtra("messages", stringArrayList);
             newIntent.putExtra("notes-int", 1);
             finish();

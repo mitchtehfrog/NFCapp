@@ -7,9 +7,11 @@
     tools:context="edu.elon.cs.nfcbulletin.EnterTextActivity">
 
     <EditText
+
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/edittext"/>
+        android:id="@+id/edittext"
+        android:gravity="top|left"/>
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -18,8 +20,8 @@
         android:text="Write Note"
         android:id="@+id/writenotebutton"
         android:onClick="sendWriteNote"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="77dp" />
+        android:layout_marginTop="174dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/edittext" />
 
 </RelativeLayout>

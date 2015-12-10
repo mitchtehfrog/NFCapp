@@ -28,6 +28,7 @@ public class EditOrDeleteActivity extends Activity {
         intent.putExtra("relevantPosition", relevantPosition);
         intent.putExtra("editmessage", s);
         intent.putStringArrayListExtra("messages", ViewTagContentActivity.stringArrayList);
+        finish();
         startActivity(intent);
     }
 
@@ -36,10 +37,16 @@ public class EditOrDeleteActivity extends Activity {
         ArrayList<String> strings = ViewTagContentActivity.stringArrayList;
         Intent intent = new Intent(this, WriteNoteActivity.class);
         NdefRecord[] ndefRecords = new NdefRecord[strings.size()];
-        for(int i = 0; i < strings.size(); i++){
-            NdefRecord ndefRecord = NdefRecord.createTextRecord(null, strings.get(i));
-            ndefRecords[i] = ndefRecord;
-        }
+       if(strings.size() > 0){
+           for(int i = 0; i < strings.size(); i++){
+               NdefRecord ndefRecord = NdefRecord.createTextRecord(null, strings.get(i));
+               ndefRecords[i] = ndefRecord;
+           }
+       }else{
+           ndefRecords = new NdefRecord[1];
+           ndefRecords[0] = NdefRecord.createTextRecord(null, "");
+
+       }
         NdefMessage ndefMessage = new NdefMessage(ndefRecords);
         intent.putExtra("message", ndefMessage);
         finish();

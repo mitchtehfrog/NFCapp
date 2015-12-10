@@ -76,6 +76,9 @@ public class ViewTagContentActivity extends Activity {
     public void onAddNoteClick(View view){
         Intent intent = new Intent(this, EnterTextActivity.class);
         //FIXME add some code to NOT put the "No notes found!" message
+        if(stringArrayList.get(0).equals("No notes found!")) {
+            stringArrayList = new ArrayList<>();
+        }
         intent.putStringArrayListExtra("messages", stringArrayList);
         startActivity(intent);
     }

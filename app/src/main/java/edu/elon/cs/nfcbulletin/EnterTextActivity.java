@@ -74,6 +74,7 @@ public class EnterTextActivity extends Activity {
 
         Intent intent = new Intent(this, WriteNoteActivity.class);
         intent.putExtra("message", ndefMessage);
+        finish();
         startActivity(intent);
     }
 
