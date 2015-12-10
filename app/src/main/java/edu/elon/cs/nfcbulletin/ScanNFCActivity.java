@@ -9,6 +9,7 @@ import android.nfc.NfcAdapter;
 import android.nfc.NdefMessage;
 import android.nfc.NfcManager;
 import android.nfc.Tag;
+import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -24,6 +25,7 @@ public class ScanNFCActivity extends Activity {
 
     private NfcAdapter nfcAdapter;
     private Context context;
+    private ArrayList<String> messages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,11 +80,12 @@ public class ScanNFCActivity extends Activity {
 
 
             Parcelable[] parcelables = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-            ArrayList<String> messages = parseStringArrayListFromNdefMessage((NdefMessage) parcelables[0]);
+            if(parcelables != null) {
+                messages = parseStringArrayListFromNdefMessage((NdefMessage) parcelables[0]);
+            }
             if(parcelables != null && parcelables.length > 0 && !messages.get(0).equals("")){
 
-                if(messages.get(0).equals("") && messages.size() == 1)
-                Toast.makeText(this, "found some notes!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "found some notes!", Toast.LENGTH_SHORT).show();
 
                 Intent newIntent = new Intent(this, ViewTagContentActivity.class);
                 newIntent.putStringArrayListExtra("messages", messages);
@@ -147,13 +150,14 @@ public class ScanNFCActivity extends Activity {
 
         try {
             for (NdefRecord ndefRecord : ndefRecords) {
-                byte[] payload = ndefRecord.getPayload();
-              //  for (int i = 0; i < payload.length; i++) {
+                    byte[] payload = ndefRecord.getPayload();
+                    //  for (int i = 0; i < payload.length; i++) {
                     String textEncoding = ((payload[0] & 128) == 0) ? "UTF-8" : "UTF-8";
                     int languageSize = payload[0] & 0063;
                     tagContent = new String(payload, languageSize + 1, payload.length - languageSize - 1,
                             textEncoding);
                     messageContent.add(tagContent);
+
 
               // }
             }
@@ -162,6 +166,8 @@ public class ScanNFCActivity extends Activity {
             }
             return messageContent;
     }
+
+
 
     //FIXME add a method to format the tag if it has been previously erased, right now it returns an error
 
