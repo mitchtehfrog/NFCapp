@@ -83,9 +83,19 @@ public class ScanNFCActivity extends Activity {
             if(parcelables != null) {
                 messages = parseStringArrayListFromNdefMessage((NdefMessage) parcelables[0]);
             }
-            if(parcelables != null && parcelables.length > 0 && !messages.get(0).equals("")){
+            if(parcelables != null && parcelables.length > 0 && !messages.get(0).equals("")) {
+                //FIXME  && !messages.get(0).equals("") after the above statement is causing problems
+                Toast.makeText(this, "found some notes!", Toast.LENGTH_SHORT).show();
 
-                    Toast.makeText(this, "found some notes!", Toast.LENGTH_SHORT).show();
+                Intent newIntent = new Intent(this, ViewTagContentActivity.class);
+                newIntent.putStringArrayListExtra("messages", messages);
+                newIntent.putExtra("notes-int", 1);
+                Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+                newIntent.putExtra("tag", tag);
+                startActivity(newIntent);
+            }else if(messages.get(0).equals("")){
+                messages.remove(0);
+                Toast.makeText(this, "found some notes!", Toast.LENGTH_SHORT).show();
 
                 Intent newIntent = new Intent(this, ViewTagContentActivity.class);
                 newIntent.putStringArrayListExtra("messages", messages);
