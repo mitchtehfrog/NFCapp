@@ -93,7 +93,7 @@ public class ScanNFCActivity extends Activity {
                 Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
                 newIntent.putExtra("tag", tag);
                 startActivity(newIntent);
-            }else if(messages != null && messages.get(0).equals("") && messages.get(1) != null){
+            }else if(messages != null && messages.get(0).equals("") && messages.size() > 1){
                 messages.remove(0);
                 Toast.makeText(this, "Found some notes!", Toast.LENGTH_SHORT).show();
 
@@ -104,7 +104,7 @@ public class ScanNFCActivity extends Activity {
                 newIntent.putExtra("tag", tag);
                 startActivity(newIntent);
 
-            }else if(messages != null && messages.get(0).equals("") && messages.get(1) == null){
+            }else if(messages != null && messages.get(0).equals("") && messages.size() <=1){
                 messages.remove(0);
                 Toast.makeText(this, "No notes found!", Toast.LENGTH_SHORT).show();
                 Intent newIntent = new Intent(this, ViewTagContentActivity.class);
