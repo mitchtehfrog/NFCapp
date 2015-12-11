@@ -128,6 +128,7 @@ public class WriteNoteActivity extends Activity {
             }
             newIntent.putStringArrayListExtra("messages", stringArrayList);
             newIntent.putExtra("notes-int", 1);
+            newIntent.putExtra("tag", tag);
             finish();
             startActivity(newIntent);
 
