@@ -92,7 +92,7 @@ public class ScanNFCActivity extends Activity {
             }
             if(parcelables != null && parcelables.length > 0 && !messages.get(0).equals("")) {
                 //FIXME  && !messages.get(0).equals("") after the above statement is causing problems
-                Toast.makeText(this, "found some notes!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Found some notes!", Toast.LENGTH_SHORT).show();
 
                 Intent newIntent = new Intent(this, ViewTagContentActivity.class);
                 newIntent.putStringArrayListExtra("messages", messages);
