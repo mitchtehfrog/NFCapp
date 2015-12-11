@@ -7,8 +7,11 @@
     tools:context="edu.elon.cs.nfcbulletin.WriteNoteActivity">
 
     <TextView
-        android:text="Move near a tag"
+        android:text="Move near the tag to be written"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textSize="25dp"/>
 
 </RelativeLayout>

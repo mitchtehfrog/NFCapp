@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -35,6 +37,9 @@ public class ViewTagContentActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_view_tag_content);
 
        listView = (ListView) findViewById(R.id.messageList);
@@ -123,6 +128,7 @@ public class ViewTagContentActivity extends Activity {
          //   stringArrayList.add("");
       //  }
         intent.putStringArrayListExtra("messages", stringArrayList);
+        finish();
         startActivity(intent);
     }
 
