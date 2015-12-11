@@ -54,15 +54,17 @@ public class ViewTagContentActivity extends Activity {
 
         try {
             Tag tag = intent.getParcelableExtra("tag");
-            Ndef ndef = Ndef.get(tag);
-            ndef.connect();
-            NdefMessage ndefMessage = ndef.getNdefMessage();
-            ndef.close();
-            double spaceTotal = ndef.getMaxSize();
-            double spaceTaken = ndefMessage.toByteArray().length;
-            System.out.println(spaceTaken);
-            System.out.println(spaceTotal);
-            space = (int) ((spaceTaken / spaceTotal) * 100);
+            if(tag != null) {
+                Ndef ndef = Ndef.get(tag);
+                ndef.connect();
+                NdefMessage ndefMessage = ndef.getNdefMessage();
+                ndef.close();
+                double spaceTotal = ndef.getMaxSize();
+                double spaceTaken = ndefMessage.toByteArray().length;
+                System.out.println(spaceTaken);
+                System.out.println(spaceTotal);
+                space = (int) ((spaceTaken / spaceTotal) * 100);
+            }
 
         }catch (FormatException e){
             throw new RuntimeException(e);
