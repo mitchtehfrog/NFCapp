@@ -95,7 +95,7 @@ public class ScanNFCActivity extends Activity {
                 startActivity(newIntent);
             }else if(messages.get(0).equals("")){
                 messages.remove(0);
-                Toast.makeText(this, "found some notes!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "No notes found!", Toast.LENGTH_SHORT).show();
 
                 Intent newIntent = new Intent(this, ViewTagContentActivity.class);
                 newIntent.putStringArrayListExtra("messages", messages);

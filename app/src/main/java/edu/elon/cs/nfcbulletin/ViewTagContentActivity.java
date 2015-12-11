@@ -14,7 +14,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import java.io.IOException;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +30,7 @@ public class ViewTagContentActivity extends Activity {
     protected static ArrayList<String> stringArrayList;
     //FIXME was only made a data member for addNoteClick
     private Intent intent;
+    private int space;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,7 @@ public class ViewTagContentActivity extends Activity {
         setContentView(R.layout.activity_view_tag_content);
 
        listView = (ListView) findViewById(R.id.messageList);
+
 
         //messageArrayList = new ArrayList<Message>();
 
@@ -45,6 +51,25 @@ public class ViewTagContentActivity extends Activity {
         }else{
             stringArrayList = intent.getStringArrayListExtra("no-notes");
         }
+
+        try {
+            Tag tag = intent.getParcelableExtra("tag");
+            Ndef ndef = Ndef.get(tag);
+            ndef.connect();
+            NdefMessage ndefMessage = ndef.getNdefMessage();
+            ndef.close();
+            double spaceTotal = ndef.getMaxSize();
+            double spaceTaken = ndefMessage.toByteArray().length;
+            System.out.println(spaceTaken);
+            System.out.println(spaceTotal);
+            space = (int) ((spaceTaken / spaceTotal) * 100);
+
+        }catch (FormatException e){
+            throw new RuntimeException(e);
+        }catch (IOException eo){
+            throw new RuntimeException(eo);
+        }
+        Toast.makeText(this, "Tag is " + "" + space + "%" + " full",Toast.LENGTH_LONG).show();
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.
                 simple_list_item_1, stringArrayList);
@@ -65,6 +90,21 @@ public class ViewTagContentActivity extends Activity {
 //
 //    }
 
+//    public void computeSpace(Tag tag) throws IOException, FormatException{
+//    try {
+//        Tag tag = intent.getParcelableExtra("tag");
+//        Ndef ndef = Ndef.get(tag);
+//        NdefMessage ndefMessage = ndef.getNdefMessage();
+//        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+//        double spaceTaken = ndef.getMaxSize();
+//        double spaceTotal = ndefMessage.toByteArray().length;
+//        int progressBarSeek = (int) (spaceTaken / spaceTotal);
+//        progressBar.setProgress(progressBarSeek);
+//    }catch (Exception e){
+//        e.printStackTrace();
+//    }
+//    }
+
     //FIXME this method doesn't work.
 //    private NdefMessage createNdefMessage(String content){
 //        NdefRecord ndefRecord = NdefRecord.createTextRecord("d", content);
@@ -76,9 +116,10 @@ public class ViewTagContentActivity extends Activity {
     public void onAddNoteClick(View view){
         Intent intent = new Intent(this, EnterTextActivity.class);
         //FIXME add some code to NOT put the "No notes found!" message
-        if(stringArrayList.get(0).equals("No notes found!")) {
-            stringArrayList = new ArrayList<>();
-        }
+       // if(stringArrayList.get(0).equals("No notes found!")) {
+           // stringArrayList = new ArrayList<>();
+         //   stringArrayList.add("");
+      //  }
         intent.putStringArrayListExtra("messages", stringArrayList);
         startActivity(intent);
     }

@@ -27,6 +27,7 @@
         <activity
             android:name=".EnterTextActivity"
             android:label="@string/title_activity_enter_text"
+            android:screenOrientation="portrait"
             >
         </activity>
         <activity
